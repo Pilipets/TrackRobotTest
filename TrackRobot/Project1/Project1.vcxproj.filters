@@ -39,6 +39,9 @@
     <ClCompile Include="src\service\OrderExecuteService.cpp">
       <Filter>Source Files\service</Filter>
     </ClCompile>
+    <ClCompile Include="AppComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AppComponent.h">

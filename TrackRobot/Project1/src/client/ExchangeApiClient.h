@@ -12,11 +12,9 @@
 
 class ExchangeApiClient : public oatpp::web::client::ApiClient {
 public:
-	ExchangeApiClient(
-		OATPP_COMPONENT(std::shared_ptr<oatpp::parser::json::mapping::ObjectMapper>, objectMapper),
-		OATPP_COMPONENT(std::shared_ptr<oatpp::web::client::RequestExecutor>, requestExecutor))
+	ExchangeApiClient(std::shared_ptr<oatpp::parser::json::mapping::ObjectMapper> objectMapper,
+		std::shared_ptr<oatpp::web::client::RequestExecutor> requestExecutor)
 		: oatpp::web::client::ApiClient(requestExecutor, objectMapper) {
-
 	}
 
 public:

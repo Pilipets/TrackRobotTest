@@ -9,7 +9,9 @@
 #include "oatpp/network/tcp/client/ConnectionProvider.hpp"
 
 #include "oatpp/core/macro/component.hpp"
-#include <string>
+
+#include "client/ExchangeApiClient.h"
+#include "oatpp/network/Address.hpp"
 
 /**
  *  Class which creates and holds Application components and registers components in oatpp::base::Environment
@@ -17,28 +19,20 @@
  */
 class AppComponent {
 private:
-    std::shared_ptr<oatpp::web::client::RequestExecutor> createOatppExecutor(const std::string& url) {
-        OATPP_LOGD("App", "Using Oat++ native HttpRequestExecutor.");
-        auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared({ url.c_str(), 80 });
-        return oatpp::web::client::HttpRequestExecutor::createShared(connectionProvider);
-    }
+    std::shared_ptr<ExchangeApiClient> createExchangeClient(const oatpp::network::Address& address);
 public:
+    oatpp::base::Environment::Component<std::shared_ptr<ExchangeApiClient>> exchangeApiClient;
 
-    /**
-     *  Create ConnectionProvider component which listens on the port
-     */
     OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
         return oatpp::network::tcp::server::ConnectionProvider::createShared({ "localhost", 8000, oatpp::network::Address::IP_4 });
-        }());
-
-    oatpp::base::Environment::Component<std::shared_ptr<oatpp::web::client::RequestExecutor>> exchangeRequestExecutor;
+    }());
 
     /**
      *  Create Router component
      */
     OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, httpRouter)([] {
         return oatpp::web::server::HttpRouter::createShared();
-        }());
+    }());
 
     /**
      *  Create ConnectionHandler component which uses Router component to route requests
@@ -55,10 +49,10 @@ public:
         auto objectMapper = oatpp::parser::json::mapping::ObjectMapper::createShared();
         objectMapper->getDeserializer()->getConfig()->allowUnknownFields = false;
         return objectMapper;
-        }());
+    }());
 
-    AppComponent(std::string exchangeUrl) :
-        exchangeRequestExecutor(createOatppExecutor(exchangeUrl)) {
+    AppComponent(const oatpp::network::Address& exchangeAddress) :
+        exchangeApiClient(createExchangeClient(exchangeAddress)) {
     }
 
 };
