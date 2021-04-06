@@ -2,6 +2,7 @@
 
 #include "dto/ExchangeOrderDto.h"
 #include "dto/TrackingOrderDto.h"
+#include "dto/ExchangeExecutionDto.h"
 
 #include "client/ExchangeApiClient.h"
 #include "service/ActiveOrderService.h"
@@ -11,12 +12,23 @@
 #include <thread>
 #include <cmath>
 #include <memory>
+#include <numeric>
 
-TrackOrderService::TrackOrderService(std::chrono::milliseconds &&updateInterval,
-	int concurrentUpdatesMax,
-	std::shared_ptr<ExchangeApiClient> exchangeApiClient):
-		checkUpdates(true), updateInterval(std::move(updateInterval)),
-		concurrentUpdatesMax(concurrentUpdatesMax), exchangeApi(exchangeApiClient) {
+void TrackOrderService::addOrder(oatpp::Object<TrackingOrderType> &&trackingOrder) {
+	std::lock_guard<mutex> lk(mx);
+
+	OATPP_LOGD("TrackOrderService", "[addOrder] repeative signal=%d, order=%d", *trackingOrder->signal_id, *trackingOrder->order_id);
+	orders.push(std::move(trackingOrder));
+}
+
+TrackOrderService::TrackOrderService(
+		std::chrono::milliseconds &&updateInterval,
+		int concurrentUpdatesMax,
+		std::shared_ptr<ExchangeApiClient> exchangeApiClient,
+		std::shared_ptr<oatpp::data::mapping::ObjectMapper> objectMapper):
+	checkUpdates(true), updateInterval(std::move(updateInterval)),
+	concurrentUpdatesMax(concurrentUpdatesMax), exchangeApi(exchangeApiClient),
+	objectMapper(objectMapper) {
 
 	updateThread = std::thread(&TrackOrderService::updateOrders, this);
 }
@@ -53,7 +65,7 @@ void TrackOrderService::updateOrders() {
 		for (int i = 0; i < lsize; i += concurrentUpdatesMax) {
 			for (int j = std::min(lsize - i, concurrentUpdatesMax); j; --j) {
 				executor.execute<UpdateOrderCoroutine>(
-					exchangeApi, activeOrderService, shared_from_this());
+					exchangeApi, shared_from_this(), objectMapper);
 			}
 
 			executor.waitTasksFinished();
@@ -74,7 +86,35 @@ oatpp::Object<TrackOrderService::TrackingOrderType> TrackOrderService::getNextOr
 	return trackingOrder;
 }
 
-void TrackOrderService::updateOrder() {
+void TrackOrderService::updateOrder(oatpp::Object<TrackingOrderType> &&trackingOrder,
+	oatpp::List<oatpp::Object<ExchangeExecutionDto>> &&executions, bool updateActive) {
+
+	if (executions->size() == trackingOrder->executions->size()) {
+		// Add order back to the queue since nothing changed
+		this->addOrder(std::move(trackingOrder));
+	} else {
+		int old_quantity = std::accumulate(trackingOrder->executions->begin(), trackingOrder->executions->end(), 0,
+			[](int quantity, const oatpp::Object<ExchangeExecutionDto>& execution) {
+				return quantity + execution->quantity;
+		});
+
+		int new_quantity = std::accumulate(executions->begin(), executions->end(), 0,
+			[](int quantity, const oatpp::Object<ExchangeExecutionDto>& execution) {
+				return quantity + execution->quantity;
+		});
+
+		OATPP_LOGD("TrackOrderService", "[updateOrder] new quantity(%d) executed for signal=%d, order=%d",
+			new_quantity-old_quantity, *trackingOrder->signal_id, *trackingOrder->order_id);
+
+		// long is positive, short is negative
+		int quantity_diff = (trackingOrder->side == 1 ? 1 : -1) * (new_quantity - old_quantity);
+		bool executed = trackingOrder->quantity == new_quantity;
+
+		trackingOrder->executions = std::move(executions);
+		activeOrderService->updateSignal(trackingOrder, quantity_diff, executed);
+
+		if (!executed) this->addOrder(std::move(trackingOrder));
+	}
 	/*
 	// Log receivedAdd tracking for created order
 	auto body = response->readBodyToString();

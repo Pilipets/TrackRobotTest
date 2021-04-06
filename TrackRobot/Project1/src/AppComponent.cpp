@@ -25,7 +25,9 @@ std::shared_ptr<ActiveOrderService> AppComponent::createActiveOrderService()
 std::shared_ptr<TrackOrderService> AppComponent::createTrackOrderService()
 {
     OATPP_COMPONENT(std::shared_ptr<ExchangeApiClient>, exchangeApiClient);
-    return std::make_shared<TrackOrderService>(std::chrono::seconds(10), 5, exchangeApiClient);
+    OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
+
+    return std::make_shared<TrackOrderService>(std::chrono::seconds(15), 5, exchangeApiClient, objectMapper);
 }
 
 AppComponent::AppComponent() :

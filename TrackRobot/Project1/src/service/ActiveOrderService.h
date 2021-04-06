@@ -39,7 +39,7 @@ class ActiveOrderService : public std::enable_shared_from_this<ActiveOrderServic
 	std::shared_ptr<oatpp::data::mapping::ObjectMapper> objectMapper;
 public:
 	void addSignal(SignalIdType signal_id);
-	void updateSignal(const oatpp::Object<TrackingOrderType> &order);
+	void updateSignal(const oatpp::Object<TrackingOrderType> &order, int quantity_diff, bool executed);
 
 	Status acceptOrder(const oatpp::Object<ClientOrderDto>& order);
 

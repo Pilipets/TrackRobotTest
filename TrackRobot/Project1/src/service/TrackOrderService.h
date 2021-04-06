@@ -6,6 +6,7 @@
 
 #include "oatpp/core/async/Executor.hpp"
 #include "oatpp/core/Types.hpp"
+#include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 
 using std::mutex;
 
@@ -13,6 +14,7 @@ class ExchangeApiClient;
 class ActiveOrderService;
 class TrackingOrderDto;
 class ExchangeOrderDto;
+class ExchangeExecutionDto;
 
 class TrackOrderService : public std::enable_shared_from_this<TrackOrderService> {
 	typedef int SignalIdType;
@@ -30,11 +32,15 @@ class TrackOrderService : public std::enable_shared_from_this<TrackOrderService>
 
 	std::shared_ptr<ExchangeApiClient> exchangeApi;
 	std::shared_ptr<ActiveOrderService> activeOrderService;
+	std::shared_ptr<oatpp::data::mapping::ObjectMapper> objectMapper;
+
+	void addOrder(oatpp::Object<TrackingOrderType> &&trackingOrder);
 public:
 	TrackOrderService() = delete;
 	TrackOrderService(std::chrono::milliseconds &&updateInterval,
 						int concurrentUpdatesMax,
-						std::shared_ptr<ExchangeApiClient> exchangeApiClient);
+						std::shared_ptr<ExchangeApiClient> exchangeApiClient,
+						std::shared_ptr<oatpp::data::mapping::ObjectMapper> objectMapper);
 	~TrackOrderService();
 
 
@@ -42,7 +48,10 @@ public:
 	void updateOrders();
 
 	oatpp::Object<TrackingOrderType> getNextOrder();
-	void updateOrder();
+	void updateOrder(
+		oatpp::Object<TrackingOrderType> &&trackingOrder,
+		oatpp::List<oatpp::Object<ExchangeExecutionDto>> &&executions,
+		bool updateActive);
 
 	void setActiveService(std::shared_ptr<ActiveOrderService> activeOrderService) {
 		this->activeOrderService = activeOrderService;

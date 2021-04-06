@@ -27,7 +27,7 @@ void ActiveOrderService::addSignal(SignalIdType signal_id) {
 	}
 }
 
-void ActiveOrderService::updateSignal(const oatpp::Object<TrackingOrderType> &order) {
+void ActiveOrderService::updateSignal(const oatpp::Object<TrackingOrderType> &order, int quantity_diff, bool executed) {
 	// TODO: add updateSignal logic
 }
 
