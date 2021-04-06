@@ -14,8 +14,7 @@ Status OrderExecuteService::acceptOrder(const oatpp::Object<ClientOrderDto>& ord
 
 	// Send execution order
 	OATPP_LOGD("OrderExecutorService", "[setOrder] body='%s'", objectMapper->writeToString(exchangeOrder)->c_str());
-	//auto response = exchangeApiClient->postOrder(exchangeOrder);
-	auto response = exchangeApiClient->getOrder(0);
+	auto response = exchangeApiClient->postOrder(exchangeOrder);
 
 	OATPP_LOGD("OrderExecutorService", "[setOrder] code=%d, msg='%s'",
 		response->getStatusCode(), response->getStatusDescription()->c_str());
@@ -27,5 +26,5 @@ Status OrderExecuteService::acceptOrder(const oatpp::Object<ClientOrderDto>& ord
 	OATPP_LOGD("OrderExecutorService", "[setOrder] response='%s'", body->c_str());
 
 	auto executions = objectMapper->readFromString<oatpp::List<oatpp::Object<ExchangeExecution>>>(body);
-	return Status::CODE_200;
+	return { 200, "Order accepted" };
 }

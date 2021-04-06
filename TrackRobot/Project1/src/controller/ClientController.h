@@ -19,10 +19,10 @@ class ClientController : public oatpp::web::server::api::ApiController {
 
     public:
 
-        ENDPOINT("POST", "/client/order", setNewOrder, BODY_DTO(Object<ClientOrderDto>, orderDto)) {
+        ENDPOINT("POST", "client/order", setNewOrder, BODY_DTO(Object<ClientOrderDto>, orderDto)) {
             OATPP_LOGD("ClientController", "Order request: '%s'", getDefaultObjectMapper()->writeToString(orderDto)->c_str());
             Status code = orderService.acceptOrder(orderDto);
-            return createResponse(code, "Dummy message");
+            return createResponse(code, code.description);
         }
 
         /*ENDPOINT("POST", "/client/temp", tempFunc, BODY_STRING(String, temp)) {

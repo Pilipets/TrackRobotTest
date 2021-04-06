@@ -5,7 +5,7 @@
 std::shared_ptr<ExchangeApiClient> AppComponent::createExchangeClient() {
     OATPP_LOGD("AppComponent", "Using Oat++ native HttpRequestExecutor.");
 
-    auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared({ "order.free.beeceptor.com", 443 });
+    auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared({ "order.free.beeceptor.com", 80 });
     auto requestExecutor = oatpp::web::client::HttpRequestExecutor::createShared(connectionProvider);
     OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
 

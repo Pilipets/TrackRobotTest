@@ -11,7 +11,7 @@ class BasicOrderDto : public oatpp::DTO {
 
 	DTO_FIELD(Int8, side);			// long or short
 	DTO_FIELD(Float32, price);		// limit order price
-	DTO_FIELD(Int32, quantity);		//
+	DTO_FIELD(Int32, quantity);	
 public:
 	BasicOrderDto(bool side, float price, int quantity) :
 		side(side), price(price), quantity(quantity) {
