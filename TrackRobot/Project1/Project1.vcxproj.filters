@@ -40,6 +40,24 @@
     <Filter Include="Source Files\coroutine">
       <UniqueIdentifier>{4d170199-9cd3-4e5c-8fa6-e93128bd4851}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\dto\client">
+      <UniqueIdentifier>{97b22d40-4fe4-493f-9da7-939246c1db2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dto\exchange">
+      <UniqueIdentifier>{b000319a-ac7d-4173-aad7-e2bad3af9c5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dto\tracking">
+      <UniqueIdentifier>{175faf50-ce6a-41a2-9442-d5d455cd014e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dto\client">
+      <UniqueIdentifier>{c430f8d9-060d-41d9-b3b4-31359f9a1e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dto\exchange">
+      <UniqueIdentifier>{e762c7ab-1692-4618-a7eb-856dd74baf11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dto\tracking">
+      <UniqueIdentifier>{ceb8cdcd-b496-47d0-bc6b-3dd2e364da91}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -54,19 +72,34 @@
     <ClCompile Include="src\service\TrackOrderService.cpp">
       <Filter>Source Files\service</Filter>
     </ClCompile>
-    <ClCompile Include="src\dto\ExchangeOrder.cpp">
-      <Filter>Source Files\dto</Filter>
+    <ClCompile Include="src\coroutine\AddOrderCoroutine.cpp">
+      <Filter>Source Files\coroutine</Filter>
     </ClCompile>
     <ClCompile Include="src\coroutine\UpdateOrderCoroutine.cpp">
       <Filter>Source Files\coroutine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dto\ClientOrderDto.cpp">
+      <Filter>Source Files\dto\client</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dto\ExchangeOrderDto.cpp">
+      <Filter>Source Files\dto\exchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dto\ExecutedOrderDto.cpp">
+      <Filter>Source Files\dto\exchange</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dto\ActiveSignalDto.cpp">
+      <Filter>Source Files\dto\tracking</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dto\TrackingOrderDto.cpp">
+      <Filter>Source Files\dto\tracking</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dto\BasicOrderDto.cpp">
+      <Filter>Source Files\dto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AppComponent.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\dto\ClientOrderDto.h">
-      <Filter>Header Files\dto</Filter>
     </ClInclude>
     <ClInclude Include="src\controller\ClientController.h">
       <Filter>Header Files\controller</Filter>
@@ -77,23 +110,35 @@
     <ClInclude Include="src\service\TrackOrderService.h">
       <Filter>Header Files\service</Filter>
     </ClInclude>
-    <ClInclude Include="src\dto\ExchangeOrderDto.h">
-      <Filter>Header Files\dto</Filter>
-    </ClInclude>
     <ClInclude Include="src\client\ExchangeApiClient.h">
       <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="src\dto\ExchangeExecutionDto.h">
-      <Filter>Header Files\dto</Filter>
     </ClInclude>
     <ClInclude Include="src\dto\BasicOrderDto.h">
       <Filter>Header Files\dto</Filter>
     </ClInclude>
-    <ClInclude Include="src\structure\Order.h">
-      <Filter>Header Files\structure</Filter>
+    <ClInclude Include="src\coroutine\AddOrderCoroutine.h">
+      <Filter>Header Files\coroutine</Filter>
     </ClInclude>
     <ClInclude Include="src\coroutine\UpdateOrderCoroutine.h">
       <Filter>Header Files\coroutine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dto\ClientOrderDto.h">
+      <Filter>Header Files\dto\client</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dto\ExchangeOrderDto.h">
+      <Filter>Header Files\dto\exchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dto\ExchangeExecutionDto.h">
+      <Filter>Header Files\dto\exchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dto\ActiveSignalDto.h">
+      <Filter>Header Files\dto\tracking</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dto\TrackingOrderDto.h">
+      <Filter>Header Files\dto\tracking</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dto\ExecutedOrderDto.h">
+      <Filter>Header Files\dto\exchange</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,14 +1,24 @@
 #include "TrackOrderService.h"
 
 #include "dto/ExchangeOrderDto.h"
+#include "dto/TrackingOrderDto.h"
+
+#include "client/ExchangeApiClient.h"
+#include "service/ActiveOrderService.h"
+
+#include "coroutine/UpdateOrderCoroutine.h"
 
 #include <thread>
+#include <cmath>
 #include <memory>
 
-TrackOrderService::TrackOrderService(std::chrono::milliseconds &&updateInterval):
-	checkUpdates(true) {
+TrackOrderService::TrackOrderService(std::chrono::milliseconds &&updateInterval,
+	int concurrentUpdatesMax,
+	std::shared_ptr<ExchangeApiClient> exchangeApiClient):
+		checkUpdates(true), updateInterval(std::move(updateInterval)),
+		concurrentUpdatesMax(concurrentUpdatesMax), exchangeApi(exchangeApiClient) {
 
-	updateThread = std::thread(&TrackOrderService::updateOrders, this, std::move(updateInterval));
+	updateThread = std::thread(&TrackOrderService::updateOrders, this);
 }
 
 TrackOrderService::~TrackOrderService() {
@@ -22,23 +32,46 @@ TrackOrderService::~TrackOrderService() {
 		updateThread.join();
 }
 
-void TrackOrderService::addOrder(SignalIdType signal_id, const oatpp::Object<ExchangeOrderDto>& order) {
+void TrackOrderService::addOrder(SignalIdType signal_id, const oatpp::Object<ExchangeOrderDto> &order) {
 	std::lock_guard<mutex> lk(mx);
 
 	OATPP_LOGD("TrackOrderService", "[addOrder] for signal=%d, order=%d", signal_id, *order->order_id);
-	orders.push_back(order_types::TrackingOrder(signal_id, order));
+	orders.push(TrackingOrderType::createShared(signal_id, order));
 }
 
-void TrackOrderService::updateOrders(std::chrono::milliseconds&& updateInterval) {
+void TrackOrderService::updateOrders() {
 	while (checkUpdates.load(std::memory_order_acquire)) {
 		auto sleep_time = std::chrono::steady_clock::now() + updateInterval;
+
+		// Get unfinished order numbers
 		std::unique_lock<mutex> lk(mx);
-		auto lsize = orders.size();
+		int lsize = orders.size();
 		lk.unlock();
 		OATPP_LOGD("TrackOrderService", "[updateOrders] on %d orders", lsize);
 
+		// Invoke update for each on the portions of concurrentUpdatesMax
+		for (int i = 0; i < lsize; i += concurrentUpdatesMax) {
+			for (int j = std::min(lsize - i, concurrentUpdatesMax); j; --j) {
+				executor.execute<UpdateOrderCoroutine>(
+					exchangeApi, activeOrderService, shared_from_this());
+			}
+
+			executor.waitTasksFinished();
+			if (executor.getTasksCount()) {
+				OATPP_LOGD("TrackOrderService", "[updateOrders] %d updates left unfinished", executor.getTasksCount());
+				executor.stop();
+			}
+		}
 		std::this_thread::sleep_until(sleep_time);
 	}
+}
+
+oatpp::Object<TrackOrderService::TrackingOrderType> TrackOrderService::getNextOrder() {
+	std::lock_guard<mutex> lk(mx);
+	auto trackingOrder = std::move(orders.front());
+	orders.pop();
+
+	return trackingOrder;
 }
 
 void TrackOrderService::updateOrder() {
@@ -47,7 +80,7 @@ void TrackOrderService::updateOrder() {
 	auto body = response->readBodyToString();
 	OATPP_LOGD("ActiveOrderService", "[setOrder] response='%s'", body->c_str());
 
-	auto executions = objectMapper->readFromString<oatpp::List<oatpp::Object<ExchangeExecution>>>(body);
+	auto executions = objectMapper->readFromString<oatpp::List<oatpp::Object<ExchangeExecutionDto>>>(body);
 	return { 200, "Order accepted" };
 	*/
 }

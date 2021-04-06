@@ -5,8 +5,9 @@
 
 /* Begin DTO code-generation */
 #include OATPP_CODEGEN_BEGIN(DTO)
-class ExchangeExecution : public oatpp::DTO {
-	DTO_INIT(ExchangeExecution, DTO /* Extends */)
+
+class ExchangeExecutionDto : public oatpp::DTO {
+	DTO_INIT(ExchangeExecutionDto, DTO /* Extends */)
 
 	DTO_FIELD(Int32, execution_id);
 	DTO_FIELD(Int32, order_id);

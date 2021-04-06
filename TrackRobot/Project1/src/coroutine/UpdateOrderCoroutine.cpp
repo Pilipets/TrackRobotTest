@@ -1,24 +1,37 @@
 #include "UpdateOrderCoroutine.h"
 
-#include "dto/ClientOrderDto.h"
-#include "dto/ExchangeOrderDto.h"
-
+#include "client/ExchangeApiClient.h"
 #include "service/ActiveOrderService.h"
 #include "service/TrackOrderService.h"
 
-UpdateOrderCoroutine::UpdateOrderCoroutine(oatpp::Object<ClientOrderDto> clientOrder,
-	oatpp::Object<ExchangeOrderDto> exchangeOrder,
-	ActiveOrderService* activeService,
-	TrackOrderService* trackService) :
-	clientOrder(clientOrder), exchangeOrder(exchangeOrder),
-	activeService(activeService), trackService(trackService) {
+#include "dto/TrackingOrderDto.h"
 
+UpdateOrderCoroutine::UpdateOrderCoroutine(
+	std::shared_ptr<ExchangeApiClient> exchangeApi,
+	std::shared_ptr<ActiveOrderService> activeService,
+	std::shared_ptr<TrackOrderService> trackService) :
+		exchangeApi(exchangeApi), activeService(activeService), trackService(trackService) {
 }
 
-oatpp::async::Action UpdateOrderCoroutine::act() {
-	OATPP_LOGD("UpdateOrderCoroutine", "[act] order=%d, signal=%d", *exchangeOrder->order_id, *clientOrder->signal_id);
+UpdateOrderCoroutine::Action UpdateOrderCoroutine::act() {
 
-	activeService->addSignal(clientOrder);
-	trackService->addOrder(clientOrder->signal_id, exchangeOrder);
+	OATPP_LOGD("UpdateOrderCoroutine", "[act]");
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+	// Get next order
+	auto trackingOrder = trackService->getNextOrder();
+
+	auto response = exchangeApi->getOrder(trackingOrder->order_id);
+	/*
+	OATPP_LOGD("UpdateOrderCoroutine", "[act] code=%d, msg='%s'",
+		response->getStatusCode(), response->getStatusDescription()->c_str());
+	if (response->getStatusCode() != Status::CODE_200.code) {
+		// Add order back to the queue
+	}
+	else {
+		// Check if executed fully in updateOrder
+		// Update signal with new executions
+		//activeService->updateSignal(order);
+	}
+	*/
 	return finish();
 }

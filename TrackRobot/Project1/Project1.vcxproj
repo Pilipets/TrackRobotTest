@@ -145,8 +145,14 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="src\AppComponent.cpp" />
+    <ClCompile Include="src\coroutine\AddOrderCoroutine.cpp" />
     <ClCompile Include="src\coroutine\UpdateOrderCoroutine.cpp" />
-    <ClCompile Include="src\dto\ExchangeOrder.cpp" />
+    <ClCompile Include="src\dto\ActiveSignalDto.cpp" />
+    <ClCompile Include="src\dto\BasicOrderDto.cpp" />
+    <ClCompile Include="src\dto\ClientOrderDto.cpp" />
+    <ClCompile Include="src\dto\ExchangeOrderDto.cpp" />
+    <ClCompile Include="src\dto\ExecutedOrderDto.cpp" />
+    <ClCompile Include="src\dto\TrackingOrderDto.cpp" />
     <ClCompile Include="src\service\ActiveOrderService.cpp" />
     <ClCompile Include="src\service\TrackOrderService.cpp" />
   </ItemGroup>
@@ -154,14 +160,17 @@
     <ClInclude Include="src\AppComponent.h" />
     <ClInclude Include="src\client\ExchangeApiClient.h" />
     <ClInclude Include="src\controller\ClientController.h" />
+    <ClInclude Include="src\coroutine\AddOrderCoroutine.h" />
     <ClInclude Include="src\coroutine\UpdateOrderCoroutine.h" />
+    <ClInclude Include="src\dto\ActiveSignalDto.h" />
     <ClInclude Include="src\dto\BasicOrderDto.h" />
     <ClInclude Include="src\dto\ClientOrderDto.h" />
     <ClInclude Include="src\dto\ExchangeExecutionDto.h" />
     <ClInclude Include="src\dto\ExchangeOrderDto.h" />
+    <ClInclude Include="src\dto\ExecutedOrderDto.h" />
+    <ClInclude Include="src\dto\TrackingOrderDto.h" />
     <ClInclude Include="src\service\ActiveOrderService.h" />
     <ClInclude Include="src\service\TrackOrderService.h" />
-    <ClInclude Include="src\structure\Order.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

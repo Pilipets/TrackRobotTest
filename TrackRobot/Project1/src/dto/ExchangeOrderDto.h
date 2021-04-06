@@ -14,9 +14,8 @@ class ExchangeOrderDto : public BasicOrderDto {
 	DTO_FIELD(Int32, order_id);
 
 	static int cnt;
-	ExchangeOrderDto(bool side, float price, int quantity) :
-		BasicOrderDto(side, price, quantity), order_id(cnt++) {
-	}
+public:
+	ExchangeOrderDto(bool side, float price, int quantity);
 };
 
 /* End DTO code-generation */
