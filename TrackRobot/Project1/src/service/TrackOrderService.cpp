@@ -87,9 +87,9 @@ oatpp::Object<TrackOrderService::TrackingOrderType> TrackOrderService::getNextOr
 }
 
 void TrackOrderService::updateOrder(oatpp::Object<TrackingOrderType> &&trackingOrder,
-	oatpp::List<oatpp::Object<ExchangeExecutionDto>> &&executions, bool updateActive) {
+	oatpp::List<oatpp::Object<ExchangeExecutionDto>> &&executions) {
 
-	if (executions->size() == trackingOrder->executions->size()) {
+	if (executions->size() == trackingOrder->executions->size() || executions->empty()) {
 		// Add order back to the queue since nothing changed
 		this->addOrder(std::move(trackingOrder));
 	} else {
@@ -103,12 +103,12 @@ void TrackOrderService::updateOrder(oatpp::Object<TrackingOrderType> &&trackingO
 				return quantity + execution->quantity;
 		});
 
-		OATPP_LOGD("TrackOrderService", "[updateOrder] new quantity(%d) executed for signal=%d, order=%d",
-			new_quantity-old_quantity, *trackingOrder->signal_id, *trackingOrder->order_id);
-
 		// long is positive, short is negative
-		int quantity_diff = (trackingOrder->side == 1 ? 1 : -1) * (new_quantity - old_quantity);
 		bool executed = trackingOrder->quantity == new_quantity;
+		int quantity_diff = (trackingOrder->side == 1 ? 1 : -1) * (new_quantity - old_quantity);
+
+		OATPP_LOGD("TrackOrderService", "[updateOrder] new quantity(%d) executed for signal=%d, order=%d",
+			quantity_diff, *trackingOrder->signal_id, *trackingOrder->order_id);
 
 		trackingOrder->executions = std::move(executions);
 		activeOrderService->updateSignal(trackingOrder, quantity_diff, executed);

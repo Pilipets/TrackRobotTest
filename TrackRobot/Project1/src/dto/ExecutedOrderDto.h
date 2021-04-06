@@ -11,6 +11,7 @@ class ExecutedOrderDto : public ExchangeOrderDto {
 
 	DTO_FIELD(List<Object<ExchangeExecutionDto>>, executions);
 public:
-	ExecutedOrderDto(const oatpp::Object<ExchangeOrderDto>& order);
+	ExecutedOrderDto(const oatpp::Object<ExchangeOrderDto>& order,
+		List<Object<ExchangeExecutionDto>> executions = List<Object<ExchangeExecutionDto>>::createShared());
 };
 #include OATPP_CODEGEN_END(DTO)

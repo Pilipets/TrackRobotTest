@@ -14,7 +14,9 @@ class ActiveSignalDto : public oatpp::DTO {
 
 	DTO_FIELD(List<Object<ExecutedOrderDto>>, finished_orders);
 public:
-	ActiveSignalDto(int signal_id);
+	ActiveSignalDto(
+		int signal_id,
+		List<Object<ExecutedOrderDto>> finished_orders = List<Object<ExecutedOrderDto>>::createShared());
 
 	void addFinished(Object<ExecutedOrderDto>&& order);
 };

@@ -50,8 +50,7 @@ public:
 	oatpp::Object<TrackingOrderType> getNextOrder();
 	void updateOrder(
 		oatpp::Object<TrackingOrderType> &&trackingOrder,
-		oatpp::List<oatpp::Object<ExchangeExecutionDto>> &&executions,
-		bool updateActive);
+		oatpp::List<oatpp::Object<ExchangeExecutionDto>> &&executions);
 
 	void setActiveService(std::shared_ptr<ActiveOrderService> activeOrderService) {
 		this->activeOrderService = activeOrderService;

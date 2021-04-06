@@ -31,9 +31,7 @@ std::shared_ptr<TrackOrderService> AppComponent::createTrackOrderService()
 }
 
 AppComponent::AppComponent() :
-    exchangeApiClient(createExchangeClient())/*,
-    activeOrderService(createActiveOrderService()),
-    trackOrderService(createTrackOrderService())*/ {
+    exchangeApiClient(createExchangeClient()) {
 
     OATPP_COMPONENT(std::shared_ptr<ActiveOrderService>, activeOrderService);
     OATPP_COMPONENT(std::shared_ptr<TrackOrderService>, trackOrderService);

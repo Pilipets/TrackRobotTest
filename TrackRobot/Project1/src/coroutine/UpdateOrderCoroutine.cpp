@@ -28,14 +28,14 @@ UpdateOrderCoroutine::Action UpdateOrderCoroutine::act() {
 	auto body = response->readBodyToString();
 	if (response->getStatusCode() != Status::CODE_200.code) {
 		// Add order back to the queue
-		trackService->updateOrder(std::move(trackingOrder), oatpp::List<oatpp::Object<ExchangeExecutionDto>>::createShared(), false);
+		trackService->updateOrder(std::move(trackingOrder), oatpp::List<oatpp::Object<ExchangeExecutionDto>>::createShared());
 	}
 	else {
 		OATPP_LOGD("UpdateOrderCoroutine", "[act] response='%s'", body->c_str());
 
 		auto executions = objectMapper->readFromString<oatpp::List<oatpp::Object<ExchangeExecutionDto>>>(body);
 		// Check if executed fully in updateOrder
-		trackService->updateOrder(std::move(trackingOrder), std::move(executions), true);
+		trackService->updateOrder(std::move(trackingOrder), std::move(executions));
 	}
 
 	return finish();
