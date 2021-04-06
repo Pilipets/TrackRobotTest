@@ -25,7 +25,7 @@ std::shared_ptr<ActiveOrderService> AppComponent::createActiveOrderService()
 
 std::shared_ptr<TrackOrderService> AppComponent::createTrackOrderService()
 {
-    return std::make_shared<TrackOrderService>();
+    return std::make_shared<TrackOrderService>(std::chrono::seconds(5));
 }
 
 AppComponent::AppComponent() :

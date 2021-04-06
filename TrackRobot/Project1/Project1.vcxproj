@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="src\AppComponent.cpp" />
+    <ClCompile Include="src\coroutine\UpdateOrderCoroutine.cpp" />
     <ClCompile Include="src\dto\ExchangeOrder.cpp" />
     <ClCompile Include="src\service\ActiveOrderService.cpp" />
     <ClCompile Include="src\service\TrackOrderService.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="src\AppComponent.h" />
     <ClInclude Include="src\client\ExchangeApiClient.h" />
     <ClInclude Include="src\controller\ClientController.h" />
+    <ClInclude Include="src\coroutine\UpdateOrderCoroutine.h" />
     <ClInclude Include="src\dto\BasicOrderDto.h" />
     <ClInclude Include="src\dto\ClientOrderDto.h" />
     <ClInclude Include="src\dto\ExchangeExecutionDto.h" />

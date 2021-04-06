@@ -31,11 +31,14 @@
     <Filter Include="Header Files\client">
       <UniqueIdentifier>{643e2fcd-9fa6-47bb-919e-b8220bd56960}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\coroutines">
-      <UniqueIdentifier>{733b3e30-3e5c-4a92-9769-56727e5e9b9e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\dto">
       <UniqueIdentifier>{a5c52a2c-af42-4021-909e-f2903a9350d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\coroutine">
+      <UniqueIdentifier>{733b3e30-3e5c-4a92-9769-56727e5e9b9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\coroutine">
+      <UniqueIdentifier>{4d170199-9cd3-4e5c-8fa6-e93128bd4851}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="src\dto\ExchangeOrder.cpp">
       <Filter>Source Files\dto</Filter>
+    </ClCompile>
+    <ClCompile Include="src\coroutine\UpdateOrderCoroutine.cpp">
+      <Filter>Source Files\coroutine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="src\structure\Order.h">
       <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\coroutine\UpdateOrderCoroutine.h">
+      <Filter>Header Files\coroutine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
