@@ -1,17 +1,15 @@
 #pragma once
 
-#include "dto/ClientOrderDto.h"
-#include "service/OrderExecuteService.h"
-
 #include "oatpp/web/server/api/ApiController.hpp"
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 
+#include "service/OrderExecuteService.h"
+#include "dto/ClientOrderDto.h"
+
 #include OATPP_CODEGEN_BEGIN(ApiController) ///< Begin Codegen
-
-
 class ClientController : public oatpp::web::server::api::ApiController {
-    OrderExecuteService service;
+    OrderExecuteService orderService;
 
     public:
         ClientController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
@@ -22,8 +20,9 @@ class ClientController : public oatpp::web::server::api::ApiController {
     public:
 
         ENDPOINT("POST", "/client/order", setNewOrder, BODY_DTO(Object<ClientOrderDto>, orderDto)) {
-            OATPP_LOGD("Client", "Order request: '%s'", m_defaultObjectMapper->writeToString(orderDto)->c_str());
-            return createResponse(Status::CODE_200, "Order accepted");
+            OATPP_LOGD("ClientController", "Order request: '%s'", getDefaultObjectMapper()->writeToString(orderDto)->c_str());
+            Status code = orderService.acceptOrder(orderDto);
+            return createResponse(code, "Dummy message");
         }
 
         /*ENDPOINT("POST", "/client/temp", tempFunc, BODY_STRING(String, temp)) {
@@ -31,5 +30,4 @@ class ClientController : public oatpp::web::server::api::ApiController {
             return createResponse(Status::CODE_200, "Order accepted");
         }*/
 };
-
 #include OATPP_CODEGEN_END(ApiController) ///< End Codegen

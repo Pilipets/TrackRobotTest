@@ -68,5 +68,11 @@
     <ClInclude Include="src\client\ExchangeApiClient.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
+    <ClInclude Include="src\dto\ExchangeExecutionDto.h">
+      <Filter>Header Files\dto</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dto\BasicOrderDto.h">
+      <Filter>Header Files\dto</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
