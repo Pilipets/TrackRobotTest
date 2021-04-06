@@ -18,7 +18,6 @@ class ExchangeOrderDto : public BasicOrderDto {
 		BasicOrderDto(side, price, quantity), order_id(cnt++) {
 	}
 };
-int ExchangeOrderDto::cnt = 0;
 
 /* End DTO code-generation */
 #include OATPP_CODEGEN_END(DTO)

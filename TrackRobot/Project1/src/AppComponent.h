@@ -11,6 +11,8 @@
 #include "oatpp/network/Address.hpp"
 
 class ExchangeApiClient;
+class ActiveOrderService;
+class TrackOrderService;
 
 /**
  *  Class which creates and holds Application components and registers components in oatpp::base::Environment
@@ -19,6 +21,8 @@ class ExchangeApiClient;
 class AppComponent {
 private:
     std::shared_ptr<ExchangeApiClient> createExchangeClient();
+    std::shared_ptr<ActiveOrderService> createActiveOrderService();
+    std::shared_ptr<TrackOrderService> createTrackOrderService();
 public:
     OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, apiObjectMapper)([] {
         auto objectMapper = oatpp::parser::json::mapping::ObjectMapper::createShared();
@@ -26,7 +30,7 @@ public:
         return objectMapper;
     }());
 
-    OATPP_CREATE_COMPONENT(std::shared_ptr<ExchangeApiClient>, exchangeApiClient)(createExchangeClient());
+    oatpp::base::Environment::Component<std::shared_ptr<ExchangeApiClient>> exchangeApiClient;
 
     OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
         return oatpp::network::tcp::server::ConnectionProvider::createShared({ "localhost", 8000, oatpp::network::Address::IP_4 });
@@ -45,5 +49,10 @@ public:
     OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
         OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router); // get Router component
         return oatpp::web::server::HttpConnectionHandler::createShared(router);
-        }());
+    }());
+
+    oatpp::base::Environment::Component<std::shared_ptr<TrackOrderService>> trackOrderService;
+    oatpp::base::Environment::Component<std::shared_ptr<ActiveOrderService>> activeOrderService;
+
+    AppComponent();
 };

@@ -31,16 +31,28 @@
     <Filter Include="Header Files\client">
       <UniqueIdentifier>{643e2fcd-9fa6-47bb-919e-b8220bd56960}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\coroutines">
+      <UniqueIdentifier>{733b3e30-3e5c-4a92-9769-56727e5e9b9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dto">
+      <UniqueIdentifier>{a5c52a2c-af42-4021-909e-f2903a9350d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\service\OrderExecuteService.cpp">
+    <ClCompile Include="src\service\ActiveOrderService.cpp">
       <Filter>Source Files\service</Filter>
     </ClCompile>
-    <ClCompile Include="AppComponent.cpp">
+    <ClCompile Include="src\AppComponent.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\service\TrackOrderService.cpp">
+      <Filter>Source Files\service</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dto\ExchangeOrder.cpp">
+      <Filter>Source Files\dto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,13 +65,10 @@
     <ClInclude Include="src\controller\ClientController.h">
       <Filter>Header Files\controller</Filter>
     </ClInclude>
-    <ClInclude Include="src\service\OrderExecuteService.h">
+    <ClInclude Include="src\service\ActiveOrderService.h">
       <Filter>Header Files\service</Filter>
     </ClInclude>
-    <ClInclude Include="src\structure\Executions.h">
-      <Filter>Header Files\structure</Filter>
-    </ClInclude>
-    <ClInclude Include="src\service\OrderTrackService.h">
+    <ClInclude Include="src\service\TrackOrderService.h">
       <Filter>Header Files\service</Filter>
     </ClInclude>
     <ClInclude Include="src\dto\ExchangeOrderDto.h">
@@ -73,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="src\dto\BasicOrderDto.h">
       <Filter>Header Files\dto</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structure\Order.h">
+      <Filter>Header Files\structure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

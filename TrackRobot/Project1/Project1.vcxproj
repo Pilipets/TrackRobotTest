@@ -144,8 +144,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="AppComponent.cpp" />
-    <ClCompile Include="src\service\OrderExecuteService.cpp" />
+    <ClCompile Include="src\AppComponent.cpp" />
+    <ClCompile Include="src\dto\ExchangeOrder.cpp" />
+    <ClCompile Include="src\service\ActiveOrderService.cpp" />
+    <ClCompile Include="src\service\TrackOrderService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AppComponent.h" />
@@ -155,9 +157,9 @@
     <ClInclude Include="src\dto\ClientOrderDto.h" />
     <ClInclude Include="src\dto\ExchangeExecutionDto.h" />
     <ClInclude Include="src\dto\ExchangeOrderDto.h" />
-    <ClInclude Include="src\service\OrderExecuteService.h" />
-    <ClInclude Include="src\service\OrderTrackService.h" />
-    <ClInclude Include="src\structure\Executions.h" />
+    <ClInclude Include="src\service\ActiveOrderService.h" />
+    <ClInclude Include="src\service\TrackOrderService.h" />
+    <ClInclude Include="src\structure\Order.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

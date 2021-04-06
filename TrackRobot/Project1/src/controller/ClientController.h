@@ -4,16 +4,16 @@
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 
-#include "service/OrderExecuteService.h"
+#include "service/ActiveOrderService.h"
 #include "dto/ClientOrderDto.h"
 
 #include OATPP_CODEGEN_BEGIN(ApiController) ///< Begin Codegen
 class ClientController : public oatpp::web::server::api::ApiController {
-    OrderExecuteService orderService;
-
+    std::shared_ptr<ActiveOrderService> activeOrderService;
     public:
-        ClientController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
-            : oatpp::web::server::api::ApiController(objectMapper) {
+        ClientController(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper),
+            OATPP_COMPONENT(std::shared_ptr<ActiveOrderService>, activeOrderService))
+            : oatpp::web::server::api::ApiController(objectMapper), activeOrderService(activeOrderService) {
 
         }
 
@@ -21,7 +21,7 @@ class ClientController : public oatpp::web::server::api::ApiController {
 
         ENDPOINT("POST", "client/order", setNewOrder, BODY_DTO(Object<ClientOrderDto>, orderDto)) {
             OATPP_LOGD("ClientController", "Order request: '%s'", getDefaultObjectMapper()->writeToString(orderDto)->c_str());
-            Status code = orderService.acceptOrder(orderDto);
+            Status code = activeOrderService->acceptOrder(orderDto);
             return createResponse(code, code.description);
         }
 
