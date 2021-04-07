@@ -7,6 +7,6 @@ ActiveSignalDto::ActiveSignalDto(
 
 }
 
-void ActiveSignalDto::addFinished(Object<ExecutedOrderDto>&& order) {
+void ActiveSignalDto::addFinished(Object<ExecutedOrderDto> order) {
 	finished_orders->push_back(std::move(order));
 }

@@ -36,11 +36,11 @@ void ActiveOrderService::updateSignal(const oatpp::Object<TrackingOrderType> &tr
 	auto signal = signals[trackingOrder->signal_id];
 
 	OATPP_LOGD("ActiveOrderService", "[updateSignal] updating signal=%d with quantity=%d", *signal->signal_id, quantity);
-	signal->active_quantity = *signal->active_quantity + quantity;
+	signal->active_quantity = signal->active_quantity + quantity;
 
 	if (executed) {
 		OATPP_LOGD("ActiveOrderService", "[updateSignal] saving executed order order_id=%d with %d executions", *trackingOrder->order_id, trackingOrder->executions->size());
-		//signal->addFinished(ExecutedOrderDto::createShared(trackingOrder));
+		signal->addFinished(trackingOrder.staticCast<oatpp::Object<ExecutedOrderDto>>());
 	}
 
 	if (signal->active_quantity == 0) {

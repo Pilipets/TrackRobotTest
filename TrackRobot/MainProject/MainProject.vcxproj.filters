@@ -25,9 +25,6 @@
     <Filter Include="Source Files\service">
       <UniqueIdentifier>{8cbc35d5-2b3a-42cf-a3f3-6564608c3b45}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\structure">
-      <UniqueIdentifier>{aa315d78-38fe-4fbe-a443-2e25bf230714}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\client">
       <UniqueIdentifier>{643e2fcd-9fa6-47bb-919e-b8220bd56960}</UniqueIdentifier>
     </Filter>
