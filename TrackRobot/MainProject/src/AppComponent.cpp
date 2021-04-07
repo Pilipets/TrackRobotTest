@@ -5,9 +5,11 @@
 #include "service/TrackOrderService.h"
 
 std::shared_ptr<ExchangeApiClient> AppComponent::createExchangeClient() {
-    OATPP_LOGD("AppComponent", "Using Oat++ native HttpRequestExecutor.");
+    const char* host = "order.free.beeceptor.com";
+    v_uint16 port = 80;
+    OATPP_LOGI("ExchangeApiClient", "Using host='%s:%d'", host, port);
 
-    auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared({ "order.free.beeceptor.com", 80 });
+    auto connectionProvider = oatpp::network::tcp::client::ConnectionProvider::createShared({ host, port });
     auto requestExecutor = oatpp::web::client::HttpRequestExecutor::createShared(connectionProvider);
 
     OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
@@ -27,7 +29,12 @@ std::shared_ptr<TrackOrderService> AppComponent::createTrackOrderService()
     OATPP_COMPONENT(std::shared_ptr<ExchangeApiClient>, exchangeApiClient);
     OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
 
-    return std::make_shared<TrackOrderService>(std::chrono::seconds(15), 5, exchangeApiClient, objectMapper);
+    auto updateInterval = std::chrono::seconds(30);
+    int maxConcurrentUpdates = 5;
+    OATPP_LOGI("TrackOrderService", "Update each %d seconds, in groups of %d", updateInterval, maxConcurrentUpdates);
+
+    return std::make_shared<TrackOrderService>(
+        std::move(updateInterval), maxConcurrentUpdates, exchangeApiClient, objectMapper);
 }
 
 AppComponent::AppComponent() :

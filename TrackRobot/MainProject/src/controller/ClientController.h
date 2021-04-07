@@ -24,10 +24,5 @@ class ClientController : public oatpp::web::server::api::ApiController {
             Status code = activeOrderService->acceptOrder(orderDto);
             return createResponse(code, code.description);
         }
-
-        /*ENDPOINT("POST", "/client/temp", tempFunc, BODY_STRING(String, temp)) {
-            OATPP_LOGD("Test", "Order request: '%s'", temp->getData());
-            return createResponse(Status::CODE_200, "Order accepted");
-        }*/
 };
 #include OATPP_CODEGEN_END(ApiController) ///< End Codegen

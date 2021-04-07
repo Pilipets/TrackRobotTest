@@ -18,7 +18,7 @@ public:
 		int signal_id,
 		List<Object<ExecutedOrderDto>> finished_orders = List<Object<ExecutedOrderDto>>::createShared());
 
-	void addFinished(Object<ExecutedOrderDto> order);
+	void addFinished(Object<ExecutedOrderDto> &&order);
 };
 
 #include OATPP_CODEGEN_END(DTO)

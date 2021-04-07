@@ -53,8 +53,6 @@ public:
 
     OATPP_CREATE_COMPONENT(std::shared_ptr<ActiveOrderService>, activeOrderService)(createActiveOrderService());
     OATPP_CREATE_COMPONENT(std::shared_ptr<TrackOrderService>, trackOrderService)(createTrackOrderService());
-    //oatpp::base::Environment::Component<std::shared_ptr<ActiveOrderService>> activeOrderService;
-    //oatpp::base::Environment::Component<std::shared_ptr<TrackOrderService>> trackOrderService;
 
     AppComponent();
 };
