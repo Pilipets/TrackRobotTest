@@ -71,7 +71,6 @@ void TrackOrderService::updateOrders() {
 			executor.waitTasksFinished();
 			if (executor.getTasksCount()) {
 				OATPP_LOGD("TrackOrderService", "[updateOrders] %d updates left unfinished", executor.getTasksCount());
-				executor.stop();
 			}
 		}
 		std::this_thread::sleep_until(sleep_time);
