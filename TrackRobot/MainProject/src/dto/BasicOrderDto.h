@@ -13,7 +13,7 @@ class BasicOrderDto : public oatpp::DTO {
 	DTO_FIELD(Float32, price);		// limit order price
 	DTO_FIELD(Int32, quantity);
 public:
-	BasicOrderDto(bool side, float price, int quantity);
+	BasicOrderDto(int8_t side, float price, int quantity);
 };
 
 /* End DTO code-generation */

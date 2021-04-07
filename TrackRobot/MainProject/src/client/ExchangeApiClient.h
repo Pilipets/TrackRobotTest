@@ -20,7 +20,7 @@ public:
 	API_CLIENT_INIT(ExchangeApiClient)
 
 	API_CALL("POST", "order", postOrder, BODY_DTO(Object<ExchangeOrderDto>, order))
-	API_CALL("GET", "order", getOrder, QUERY(Int32, order_id))
+	API_CALL("GET", "order", getOrder, QUERY(UInt32, order_id))
 };
 
 #include OATPP_CODEGEN_END(ApiClient) ///< End code-gen section

@@ -22,17 +22,21 @@ UpdateOrderCoroutine::Action UpdateOrderCoroutine::act() {
 		response->getStatusCode(), response->getStatusDescription()->c_str());
 	
 	auto body = response->readBodyToString();
+	auto executions = oatpp::List<oatpp::Object<ExchangeExecutionDto>>::createShared();
 	if (response->getStatusCode() != Status::CODE_200.code) {
 		// Add order back to the queue
-		trackService->updateOrder(std::move(trackingOrder), oatpp::List<oatpp::Object<ExchangeExecutionDto>>::createShared());
+		trackService->updateOrder(std::move(trackingOrder), std::move(executions));
 	}
 	else {
 		OATPP_LOGD("UpdateOrderCoroutine", "[act] response='%s'", body->c_str());
 
-		auto executions = objectMapper->readFromString<oatpp::List<oatpp::Object<ExchangeExecutionDto>>>(body);
+		try {
+			executions = objectMapper->readFromString<oatpp::List<oatpp::Object<ExchangeExecutionDto>>>(body);
+		} catch (std::exception& ex) {
+			OATPP_LOGD("UpdateOrderCoroutine", "can't parse the response='%s'", ex.what());
+		}
 		// Check if executed fully in updateOrder
 		trackService->updateOrder(std::move(trackingOrder), std::move(executions));
 	}
-
 	return finish();
 }

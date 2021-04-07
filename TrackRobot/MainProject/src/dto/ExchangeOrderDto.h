@@ -11,11 +11,11 @@
 class ExchangeOrderDto : public BasicOrderDto {
 	DTO_INIT(ExchangeOrderDto, BasicOrderDto /* Extends */)
 
-	DTO_FIELD(Int32, order_id);
+	DTO_FIELD(UInt32, order_id);
 
-	static int cnt;
+	static uint32_t cnt;
 public:
-	ExchangeOrderDto(bool side, float price, int quantity);
+	ExchangeOrderDto(int8_t side, float price, int quantity);
 };
 
 /* End DTO code-generation */

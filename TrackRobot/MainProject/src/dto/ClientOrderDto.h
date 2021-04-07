@@ -12,7 +12,7 @@ class ClientOrderDto : public BasicOrderDto {
 
 	DTO_FIELD(Int32, signal_id);
 public:
-	ClientOrderDto(bool side, float price, int quantity, int signal_id);
+	ClientOrderDto(int8_t side, float price, int quantity, int signal_id);
 };
 
 /* End DTO code-generation */
