@@ -11,7 +11,7 @@ Details:
 Flow:
 1. A client posts order to the client/order endpoint -> ClientController::setNewOrder -> ActiveOrderService accepts the order -> ActiveOrderService::acceptOrder -> ActiveOrderService posts the order to the exchange market -> ExchangeApiClient::postOrder -> if an error occurs, returns to the client, otherwise proccesses the order asynchronously -> AddOrderCoroutine::act -> Creates the signal with ActiveOrderService::addSignal and adds order for tracking OrderTrackService::addOrder;
 2. A robot asynchronously updates the order execution statuses and signals -> TrackOrderService::updateOrders -> take next k orders from the queue using ExchangeApiClient::getOrder and request updates with UpdateOrderCoroutine::act -> if changed, TrackOrderService::updateOrder + ActiveOrderService::updateSignal...
- 
+3. Open .sln file in Visual Studio 2019, and click Build, or convert the VS project to CMakeLists.txt :)
 
 Potential upgrades:
 1. Unhandled exceptions in coroutines might lead to missing the track of the order - left untouched at the moment.
@@ -19,3 +19,4 @@ Potential upgrades:
 3. Add logging to the file, DB.
 4. Use Object when it's required as it creates performance overhead with shared_ptr.
 5. Add tests using oatpp-test.
+6. Add configuration file.
