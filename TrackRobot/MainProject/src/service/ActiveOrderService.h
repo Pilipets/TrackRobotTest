@@ -33,22 +33,23 @@ class ActiveOrderService : public std::enable_shared_from_this<ActiveOrderServic
 
 	oatpp::async::Executor executor;
 
-
 	std::shared_ptr<ExchangeApiClient> exchangeApi;
 	std::shared_ptr<TrackOrderService> trackOrderService;
 	std::shared_ptr<oatpp::data::mapping::ObjectMapper> objectMapper;
+
+private:
 public:
-	void addSignal(SignalIdType signal_id);
-	void updateSignal(const oatpp::Object<TrackingOrderType> &order, int quantity_diff, bool executed);
-
 	Status acceptOrder(const oatpp::Object<ClientOrderDto>& order);
+	void addSignal(SignalIdType signal_id);
+	void updateSignal(const oatpp::Object<TrackingOrderType>& trackingOrder, int quantity, bool executed);
+	void updateSignalAsync(const oatpp::Object<TrackingOrderType>& trackingOrder, int quantity, bool executed);
 
+
+	ActiveOrderService() = delete;
 	ActiveOrderService(std::shared_ptr<ExchangeApiClient> exchangeApiClient,
 		std::shared_ptr<oatpp::data::mapping::ObjectMapper> objectMapper);
 
-	void setTrackingService(std::shared_ptr<TrackOrderService> trackOrderService) {
-		this->trackOrderService = trackOrderService;
-	}
+	void setTrackingService(std::shared_ptr<TrackOrderService> trackOrderService);
 
 	~ActiveOrderService();
 };

@@ -1,7 +1,6 @@
 #include "UpdateOrderCoroutine.h"
 
 #include "client/ExchangeApiClient.h"
-#include "service/ActiveOrderService.h"
 #include "service/TrackOrderService.h"
 
 #include "dto/TrackingOrderDto.h"
@@ -15,9 +14,6 @@ UpdateOrderCoroutine::UpdateOrderCoroutine(
 }
 
 UpdateOrderCoroutine::Action UpdateOrderCoroutine::act() {
-
-	OATPP_LOGD("UpdateOrderCoroutine", "[act]");
-	std::this_thread::sleep_for(std::chrono::seconds(5));
 	// Get next order
 	auto trackingOrder = trackService->getNextOrder();
 

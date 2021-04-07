@@ -24,6 +24,7 @@
     <ProjectGuid>{7ca32cec-34e6-4937-8a71-d070548d7b6d}</ProjectGuid>
     <RootNamespace>Project1</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>MainProject</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -147,6 +148,7 @@
     <ClCompile Include="src\AppComponent.cpp" />
     <ClCompile Include="src\coroutine\AddOrderCoroutine.cpp" />
     <ClCompile Include="src\coroutine\UpdateOrderCoroutine.cpp" />
+    <ClCompile Include="src\coroutine\UpdateSignalCoroutine.cpp" />
     <ClCompile Include="src\dto\ActiveSignalDto.cpp" />
     <ClCompile Include="src\dto\BasicOrderDto.cpp" />
     <ClCompile Include="src\dto\ClientOrderDto.cpp" />
@@ -162,6 +164,7 @@
     <ClInclude Include="src\controller\ClientController.h" />
     <ClInclude Include="src\coroutine\AddOrderCoroutine.h" />
     <ClInclude Include="src\coroutine\UpdateOrderCoroutine.h" />
+    <ClInclude Include="src\coroutine\UpdateSignalCoroutine.h" />
     <ClInclude Include="src\dto\ActiveSignalDto.h" />
     <ClInclude Include="src\dto\BasicOrderDto.h" />
     <ClInclude Include="src\dto\ClientOrderDto.h" />

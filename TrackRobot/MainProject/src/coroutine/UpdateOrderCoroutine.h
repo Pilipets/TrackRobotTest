@@ -8,7 +8,6 @@
 
 class ExchangeApiClient;
 class TrackOrderService;
-class ActiveOrderService;
 
 class UpdateOrderCoroutine : public oatpp::async::Coroutine<UpdateOrderCoroutine> {
 	typedef oatpp::web::protocol::http::Status Status;

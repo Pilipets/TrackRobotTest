@@ -96,6 +96,9 @@
     <ClCompile Include="src\dto\BasicOrderDto.cpp">
       <Filter>Source Files\dto</Filter>
     </ClCompile>
+    <ClCompile Include="src\coroutine\UpdateSignalCoroutine.cpp">
+      <Filter>Source Files\coroutine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AppComponent.h">
@@ -139,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="src\dto\ExecutedOrderDto.h">
       <Filter>Header Files\dto\exchange</Filter>
+    </ClInclude>
+    <ClInclude Include="src\coroutine\UpdateSignalCoroutine.h">
+      <Filter>Header Files\coroutine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

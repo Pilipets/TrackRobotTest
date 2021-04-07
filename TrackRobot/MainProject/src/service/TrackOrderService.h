@@ -33,8 +33,6 @@ class TrackOrderService : public std::enable_shared_from_this<TrackOrderService>
 	std::shared_ptr<ExchangeApiClient> exchangeApi;
 	std::shared_ptr<ActiveOrderService> activeOrderService;
 	std::shared_ptr<oatpp::data::mapping::ObjectMapper> objectMapper;
-
-	void addOrder(oatpp::Object<TrackingOrderType> &&trackingOrder);
 public:
 	TrackOrderService() = delete;
 	TrackOrderService(std::chrono::milliseconds &&updateInterval,
@@ -45,14 +43,15 @@ public:
 
 
 	void addOrder(SignalIdType signal_id, const oatpp::Object<ExchangeOrderDto>& order);
-	void updateOrders();
 
 	oatpp::Object<TrackingOrderType> getNextOrder();
 	void updateOrder(
 		oatpp::Object<TrackingOrderType> &&trackingOrder,
 		oatpp::List<oatpp::Object<ExchangeExecutionDto>> &&executions);
 
-	void setActiveService(std::shared_ptr<ActiveOrderService> activeOrderService) {
-		this->activeOrderService = activeOrderService;
-	}
+
+	void addOrder(oatpp::Object<TrackingOrderType>&& trackingOrder);
+	void updateOrders();
+
+	void setActiveService(std::shared_ptr<ActiveOrderService> activeOrderService);
 };

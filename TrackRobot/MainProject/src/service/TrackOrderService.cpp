@@ -111,16 +111,13 @@ void TrackOrderService::updateOrder(oatpp::Object<TrackingOrderType> &&trackingO
 			quantity_diff, *trackingOrder->signal_id, *trackingOrder->order_id);
 
 		trackingOrder->executions = std::move(executions);
-		activeOrderService->updateSignal(trackingOrder, quantity_diff, executed);
+		activeOrderService->updateSignalAsync(trackingOrder, quantity_diff, executed);
 
 		if (!executed) this->addOrder(std::move(trackingOrder));
 	}
-	/*
-	// Log receivedAdd tracking for created order
-	auto body = response->readBodyToString();
-	OATPP_LOGD("ActiveOrderService", "[setOrder] response='%s'", body->c_str());
+}
 
-	auto executions = objectMapper->readFromString<oatpp::List<oatpp::Object<ExchangeExecutionDto>>>(body);
-	return { 200, "Order accepted" };
-	*/
+void TrackOrderService::setActiveService(std::shared_ptr<ActiveOrderService> activeOrderService)
+{
+	this->activeOrderService = activeOrderService;
 }

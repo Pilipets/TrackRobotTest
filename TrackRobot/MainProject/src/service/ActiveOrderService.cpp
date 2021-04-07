@@ -13,6 +13,7 @@
 #include "service/TrackOrderService.h"
 
 #include "coroutine/AddOrderCoroutine.h"
+#include "coroutine/UpdateSignalCoroutine.h"
 
 #include <memory>
 
@@ -29,14 +30,13 @@ void ActiveOrderService::addSignal(SignalIdType signal_id) {
 }
 
 void ActiveOrderService::updateSignal(const oatpp::Object<TrackingOrderType> &trackingOrder,
-	int quantity_diff, bool executed) {
+	int quantity, bool executed) {
 
 	std::lock_guard<mutex> lk(mx);
-	auto it = signals.find(trackingOrder->signal_id);
-	auto signal = it->second;
+	auto signal = signals[trackingOrder->signal_id];
 
-	OATPP_LOGD("ActiveOrderService", "[updateSignal] updating signal=%d with quantity=%d", *signal->signal_id, quantity_diff);
-	signal->active_quantity = *signal->active_quantity + quantity_diff;
+	OATPP_LOGD("ActiveOrderService", "[updateSignal] updating signal=%d with quantity=%d", *signal->signal_id, quantity);
+	signal->active_quantity = *signal->active_quantity + quantity;
 
 	if (executed) {
 		OATPP_LOGD("ActiveOrderService", "[updateSignal] saving executed order order_id=%d with %d executions", *trackingOrder->order_id, trackingOrder->executions->size());
@@ -45,8 +45,13 @@ void ActiveOrderService::updateSignal(const oatpp::Object<TrackingOrderType> &tr
 
 	if (signal->active_quantity == 0) {
 		OATPP_LOGD("ActiveOrderService", "[updateSignal] removing from track signal signal=%d with %d orders", *signal->signal_id, signal->finished_orders->size());
-		signals.erase(it);
+		signals.erase(trackingOrder->signal_id);
 	}
+}
+
+void ActiveOrderService::updateSignalAsync(const oatpp::Object<TrackingOrderType>& trackingOrder, int quantity, bool executed)
+{
+	executor.execute<UpdateSignalCoroutine>(shared_from_this(), trackingOrder, quantity, executed);
 }
 
 Status ActiveOrderService::acceptOrder(const oatpp::Object<ClientOrderDto>& order) {
@@ -70,6 +75,11 @@ Status ActiveOrderService::acceptOrder(const oatpp::Object<ClientOrderDto>& orde
 ActiveOrderService::ActiveOrderService(std::shared_ptr<ExchangeApiClient> exchangeApiClient, std::shared_ptr<oatpp::data::mapping::ObjectMapper> objectMapper):
 	exchangeApi(exchangeApiClient), objectMapper(objectMapper) {
 
+}
+
+void ActiveOrderService::setTrackingService(std::shared_ptr<TrackOrderService> trackOrderService)
+{
+	this->trackOrderService = trackOrderService;
 }
 
 ActiveOrderService::~ActiveOrderService() {
