@@ -1,13 +1,16 @@
 Comments for the project.
 
+Dependencies:
+1. C++14.
+2. https://github.com/oatpp/oatpp
+3. Compiled Debug x64 with VisualStudio/16.9.3+31129.286.
+
 Details:
-1. Stack: C++14, oat++
-2. Console logging.
-3. Manual testing via "beeceptor"(mock server), postman(mock client).
-4. ThreadPools in ActiveOrderService, TrackOrderService which work with coroutines - AddOrderCoroutine, UpdateOrderCoroutine, UpdateSignalCoroutine.
-5. ExchangeApiClient interface and component management logic which are similar to Spring Feign, Spring Boot.
-6. Compiled static "oatpp" libraries can be added upon request.
-7. Compiled Debug x64 with VisualStudio/16.9.3+31129.286.
+1. Console logging.
+2. Manual testing via "beeceptor"(mock server), postman(mock client).
+3. ThreadPools in ActiveOrderService, TrackOrderService which work with coroutines - AddOrderCoroutine, UpdateOrderCoroutine, UpdateSignalCoroutine.
+4. ExchangeApiClient interface and component management logic which are similar to Spring Feign, Spring Boot.
+5. Compiled static "oatpp" libraries can be added upon request.
 
 Flow:
 1. A client posts order to the client/order endpoint -> ClientController::setNewOrder -> ActiveOrderService accepts the order -> ActiveOrderService::acceptOrder -> ActiveOrderService posts the order to the exchange market -> ExchangeApiClient::postOrder -> if an error occurs, returns to the client, otherwise proccesses the order asynchronously -> AddOrderCoroutine::act -> Creates the signal with ActiveOrderService::addSignal and adds order for tracking OrderTrackService::addOrder;
@@ -16,9 +19,10 @@ Flow:
 4. On Windows run .exe from TrackRobot/x64/Debug.
 
 Potential upgrades:
-1. Unhandled exceptions in coroutines might lead to missing the track of the order - left untouched at the moment.
-2. Replace sync API calls with async through combining coroutines.
-3. Add logging to the file, DB.
-4. Use Object when it's required as it creates performance overhead with shared_ptr.
-5. Add tests using oatpp-test.
-6. Add configuration file.
+1. Add event dispatcher system to remove strong coupling between components.
+2. Unhandled exceptions in coroutines might lead to missing the track of the order - left untouched at the moment.
+3. Replace sync API calls with async through combining coroutines.
+4. Add logging to the file, DB.
+5. Use Object when it's required as it creates performance overhead with shared_ptr.
+6. Add tests using oatpp-test.
+7. Add configuration file.
