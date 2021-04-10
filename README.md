@@ -7,11 +7,13 @@ Details:
 4. ThreadPools in ActiveOrderService, TrackOrderService which work with coroutines - AddOrderCoroutine, UpdateOrderCoroutine, UpdateSignalCoroutine.
 5. ExchangeApiClient interface and component management logic which are similar to Spring Feign, Spring Boot.
 6. Compiled static "oatpp" libraries can be added upon request.
+7. Compiled Debug x64 with VisualStudio/16.9.3+31129.286.
 
 Flow:
 1. A client posts order to the client/order endpoint -> ClientController::setNewOrder -> ActiveOrderService accepts the order -> ActiveOrderService::acceptOrder -> ActiveOrderService posts the order to the exchange market -> ExchangeApiClient::postOrder -> if an error occurs, returns to the client, otherwise proccesses the order asynchronously -> AddOrderCoroutine::act -> Creates the signal with ActiveOrderService::addSignal and adds order for tracking OrderTrackService::addOrder;
 2. A robot asynchronously updates the order execution statuses and signals -> TrackOrderService::updateOrders -> take next k orders from the queue using ExchangeApiClient::getOrder and request updates with UpdateOrderCoroutine::act -> if changed, TrackOrderService::updateOrder + ActiveOrderService::updateSignal...
 3. Open .sln file in Visual Studio 2019, and click Build, or convert the VS project to CMakeLists.txt :)
+4. On Windows run .exe from TrackRobot/x64/Debug.
 
 Potential upgrades:
 1. Unhandled exceptions in coroutines might lead to missing the track of the order - left untouched at the moment.
