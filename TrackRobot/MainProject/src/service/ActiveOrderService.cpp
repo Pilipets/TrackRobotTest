@@ -49,8 +49,7 @@ void ActiveOrderService::updateSignal(const oatpp::Object<TrackingOrderType> &tr
 	}
 }
 
-void ActiveOrderService::updateSignalAsync(const oatpp::Object<TrackingOrderType>& trackingOrder, int quantity, bool executed)
-{
+void ActiveOrderService::updateSignalAsync(const oatpp::Object<TrackingOrderType>& trackingOrder, int quantity, bool executed) {
 	executor.execute<UpdateSignalCoroutine>(shared_from_this(), trackingOrder, quantity, executed);
 }
 
@@ -83,7 +82,7 @@ void ActiveOrderService::setTrackingService(std::shared_ptr<TrackOrderService> t
 }
 
 ActiveOrderService::~ActiveOrderService() {
-	executor.waitTasksFinished(std::chrono::minutes(2));
+	executor.waitTasksFinished();
 	executor.stop();
 	executor.join();
 }

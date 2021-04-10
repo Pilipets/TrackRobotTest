@@ -29,12 +29,10 @@ std::shared_ptr<TrackOrderService> AppComponent::createTrackOrderService()
     OATPP_COMPONENT(std::shared_ptr<ExchangeApiClient>, exchangeApiClient);
     OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
 
-    auto updateInterval = std::chrono::seconds(30);
-    int maxConcurrentUpdates = 5;
-    OATPP_LOGI("TrackOrderService", "Update each %d seconds, in groups of %d", updateInterval, maxConcurrentUpdates);
+    uint8_t maxConcurrentUpdates = 5;
+    OATPP_LOGI("TrackOrderService", "%d threads requested", maxConcurrentUpdates);
 
-    return std::make_shared<TrackOrderService>(
-        std::move(updateInterval), maxConcurrentUpdates, exchangeApiClient, objectMapper);
+    return std::make_shared<TrackOrderService>(maxConcurrentUpdates, exchangeApiClient, objectMapper);
 }
 
 AppComponent::AppComponent() :
