@@ -1,0 +1,6 @@
+{
+    "side":1,
+    "price":100.198,
+    "quantity":50,
+    "signal_id":43678
+}
